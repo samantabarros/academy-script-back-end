@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id    String @id @default(uuid())
+  email String //usuario login
+  senha String
+
+  @@map("usuarios") //Nome da tabela
+}
+
+//model Matricula (AlunoModulo)
+model Aluno {
+  id              String            @id @default(uuid())
+  nome_aluno      String
+  cpf             String            @unique
+  data_nascimento String
+  modulos         Modulo[] //substituir por Matricula
+  //MatriculaModulo MatriculaModulo[]
+
+  @@map("alunos") //Nome da tabela
+}
+
+model Modulo {
+  id          String @id @default(uuid())
+  nome_modulo String
+  nota1       Float
+  nota2       Float
+  nota3       Float
+  id_aluno    String
+
+  aluno           Aluno             @relation(fields: [id_aluno], references: [id])
+  //MatriculaModulo MatriculaModulo[]
+
+  @@map("modulos") //Nome da tabela
+}
+
+// model MatriculaModulo {
+//   id        String  @id @default(uuid())
+//   id_aluno  String
+//   alunoId   Aluno?  @relation(fields: [id_aluno], references: [id])
+//   id_modulo String
+//   moduloId  Modulo? @relation(fields: [id_modulo], references: [id])
+
+//   @@map("matricula_modulo")
+// }
