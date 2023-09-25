@@ -13,8 +13,8 @@ export class AlunosService {
         cpf: data.cpf,
       },
     });
-    console.log(data);
-    console.log(alunoExists);
+    // console.log(data);
+    // console.log(alunoExists);
     if (alunoExists) {
       throw new Error('Esse aluno ja existe no sistema');
     }
@@ -27,7 +27,15 @@ export class AlunosService {
 
   //Mostra aluno
   async findAll() {
-    return this.prisma.aluno.findMany();
+    return this.prisma.aluno.findMany({
+      include: {
+        Matricula: true,
+      },
+      orderBy: {
+        //para deixar os nomes em ordem crescente (desc) para decrescente
+        nome_aluno: 'asc',
+      },
+    });
   }
   //Atualiza aluno
   async update(id: string, data: AlunoDTO) {
@@ -50,6 +58,7 @@ export class AlunosService {
 
   //Deleta aluno
   async delete(id: string) {
+    //const deleteMatricula = await this.prisma
     const alunoExists = await this.prisma.aluno.findUnique({
       where: {
         id,
