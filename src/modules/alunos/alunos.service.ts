@@ -4,7 +4,7 @@ import { AlunoDTO } from './alunos.dto';
 
 @Injectable()
 export class AlunosService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   //Dessa forma o service não fica refem do Prisma (desaclopa)
   async create(data: AlunoDTO) {
     //Cria um aluno
@@ -58,7 +58,6 @@ export class AlunosService {
 
   //Deleta aluno
   async delete(id: string) {
-    //const deleteMatricula = await this.prisma
     const alunoExists = await this.prisma.aluno.findUnique({
       where: {
         id,
@@ -69,6 +68,19 @@ export class AlunosService {
       console.log('aluno não encontrado');
       throw new Error('Esse aluno nao esta cadastrado!');
     } else {
+      const existsMatricula = await this.prisma.matricula.findMany({
+        where: {
+          id_aluno: id,
+        },
+      });
+
+      if (existsMatricula) {
+        await this.prisma.matricula.deleteMany({
+          where: {
+            id_aluno: id,
+          },
+        });
+      }
       const res = await this.prisma.aluno.delete({
         where: {
           id,
