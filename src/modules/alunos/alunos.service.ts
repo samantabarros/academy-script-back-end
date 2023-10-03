@@ -37,6 +37,15 @@ export class AlunosService {
       },
     });
   }
+
+  async findById(id: string) {
+    return this.prisma.aluno.findFirst({
+      where: {
+        //Procura o primeiro id que seja igual ao id que foi passado para findById
+        id:id
+      }
+    })
+  }
   //Atualiza aluno
   async update(id: string, data: AlunoDTO) {
     const alunoExists = await this.prisma.aluno.findUnique({

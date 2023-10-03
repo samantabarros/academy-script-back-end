@@ -29,7 +29,7 @@ export class ModulosService {
   }
 
   async update(id: string, data: ModuloDTO) {
-    const moduloExists = await this.prisma.modulo.findUnique({
+    const moduloExists = await this.prisma.modulo.findFirst({
       where: {
         id,
       },
