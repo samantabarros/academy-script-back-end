@@ -26,6 +26,12 @@ export class AlunosController {
     return this.alunosService.findAll();
   }
 
+  
+  @Get(':id')
+  async findById() {
+    return this.alunosService.findById('id');
+  }
+
   //Edita os dados de um aluno
   @Put(':id')
   async update(@Param('id') id: string, @Body() data: AlunoDTO) {

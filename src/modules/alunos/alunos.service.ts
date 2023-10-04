@@ -46,6 +46,7 @@ export class AlunosService {
       }
     })
   }
+  
   //Atualiza aluno
   async update(id: string, data: AlunoDTO) {
     const alunoExists = await this.prisma.aluno.findUnique({
