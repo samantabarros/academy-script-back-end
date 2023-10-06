@@ -23,7 +23,7 @@ model Aluno {
   id              String      @id @default(uuid())
   nome_aluno      String
   cpf             String      @unique
-  data_nascimento String
+  data_nascimento DateTime
   Matricula       Matricula[]
 
   @@map("alunos") //Nome da tabela
