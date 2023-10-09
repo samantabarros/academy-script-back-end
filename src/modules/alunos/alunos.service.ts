@@ -17,9 +17,18 @@ export class AlunosService {
     // console.log(alunoExists);
     if (alunoExists) {
       throw new Error('Esse aluno ja existe no sistema');
+
     }
+    console.log(data)
+    //Tratar a data_de_nascimento(o tipo)
+    //const dataFormatada = data.data_nascimento;
+  
     const aluno = await this.prisma.aluno.create({
-      data,
+      // data: {
+      //   cpf: data.cpf,
+      //   //data_nascimento: dataFormatada,
+      // },
+      data
     });
 
     return aluno;
