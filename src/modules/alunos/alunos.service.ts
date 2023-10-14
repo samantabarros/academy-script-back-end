@@ -64,6 +64,7 @@ export class AlunosService {
       },
     });
 
+    console.log(alunoExists)
     if (!alunoExists) {
       throw new Error('Esse aluno nao esta cadastrado!');
     }
