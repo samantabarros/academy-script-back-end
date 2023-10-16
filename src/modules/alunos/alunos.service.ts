@@ -74,7 +74,7 @@ export class AlunosService {
         id,
       },
     });
-  }
+   }
 
   //Deleta aluno
   async delete(id: string) {
