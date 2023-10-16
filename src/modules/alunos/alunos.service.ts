@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { AlunoDTO } from './alunos.dto';
 
@@ -16,7 +16,7 @@ export class AlunosService {
     // console.log(data);
     // console.log(alunoExists);
     if (alunoExists) {
-      throw new Error('Esse aluno ja existe no sistema');
+      throw new ConflictException('Esse aluno ja existe no sistema');
 
     }
     console.log(data)
