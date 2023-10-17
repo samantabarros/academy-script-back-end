@@ -16,7 +16,7 @@ export class AlunosService {
     // console.log(data);
     // console.log(alunoExists);
     if (alunoExists) {
-      throw new ConflictException('Esse aluno ja existe no sistema');
+      throw new ConflictException('Esse aluno já existe no sistema');
 
     }
     console.log(data)
@@ -66,7 +66,7 @@ export class AlunosService {
 
     console.log(alunoExists)
     if (!alunoExists) {
-      throw new Error('Esse aluno nao esta cadastrado!');
+      throw new Error('Esse aluno não está cadastrado!');
     }
     return await this.prisma.aluno.update({
       data,
@@ -86,7 +86,7 @@ export class AlunosService {
 
     if (!alunoExists) {
       console.log('aluno não encontrado');
-      throw new Error('Esse aluno nao esta cadastrado!');
+      throw new Error('Esse aluno não está cadastrado!');
     } else {
       const existsMatricula = await this.prisma.matricula.findMany({
         where: {
