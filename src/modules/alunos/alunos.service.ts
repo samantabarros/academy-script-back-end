@@ -53,6 +53,7 @@ export class AlunosService {
         //Procura o primeiro id que seja igual ao id que foi passado para findById
         id:id
       }
+      
     })
   }
   
@@ -63,7 +64,7 @@ export class AlunosService {
         id,
       },
     });
-
+    
     console.log(alunoExists)
     if (!alunoExists) {
       throw new Error('Esse aluno não está cadastrado!');
