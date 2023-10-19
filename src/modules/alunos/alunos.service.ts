@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { AlunoDTO } from './alunos.dto';
 
@@ -22,7 +22,7 @@ export class AlunosService {
     console.log(data)
     //Tratar a data_de_nascimento(o tipo)
     //const dataFormatada = data.data_nascimento;
-  
+
     const aluno = await this.prisma.aluno.create({
       // data: {
       //   cpf: data.cpf,
@@ -51,31 +51,29 @@ export class AlunosService {
     return this.prisma.aluno.findFirst({
       where: {
         //Procura o primeiro id que seja igual ao id que foi passado para findById
-        id:id
+        id: id
       }
-      
+
     })
   }
-  
+
   //Atualiza aluno
   async update(id: string, data: AlunoDTO) {
-    const alunoExists = await this.prisma.aluno.findUnique({
-      where: {
-        id,
-      },
-    });
-    
-    console.log(alunoExists)
-    if (!alunoExists) {
-      throw new Error('Esse aluno não está cadastrado!');
+    try {
+      return await this.prisma.aluno.update({
+        data,
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      if(error.code == 'P2002' && error.meta?.target?.includes('cpf')){
+        throw new HttpException('Esse cpf já existe no sistema!', HttpStatus.BAD_REQUEST);
+      }
+      console.log("error");
+      throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return await this.prisma.aluno.update({
-      data,
-      where: {
-        id,
-      },
-    });
-   }
+  }
 
   //Deleta aluno
   async delete(id: string) {
