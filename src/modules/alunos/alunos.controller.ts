@@ -28,8 +28,8 @@ export class AlunosController {
 
   
   @Get(':id')
-  async findById() {
-    return this.alunosService.findById('id');
+  async findById(@Param('id') id: string) {
+    return this.alunosService.findById(id);
   }
 
   //Edita os dados de um aluno
