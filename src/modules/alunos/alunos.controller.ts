@@ -26,7 +26,6 @@ export class AlunosController {
     return this.alunosService.findAll();
   }
 
-  
   @Get(':id')
   async findById(@Param('id') id: string) {
     return this.alunosService.findById(id);

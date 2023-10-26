@@ -38,7 +38,7 @@ export class AlunosService {
   async findAll() {
     return this.prisma.aluno.findMany({
       include: {
-        Matricula: true,
+        Matricula: true
       },
       orderBy: {
         //para deixar os nomes em ordem crescente (desc) para decrescente

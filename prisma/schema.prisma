@@ -24,7 +24,7 @@ model Aluno {
   nome_aluno      String
   cpf             String      @unique
   data_nascimento DateTime
-  Matricula       Matricula[]
+  Matricula   Matricula[]
 
   @@map("alunos") //Nome da tabela
 }
@@ -47,5 +47,5 @@ model Matricula {
   id_modulo String
   moduloId  Modulo? @relation(fields: [id_modulo], references: [id])
 
-  @@map("matriculas")
+  @@map("matricula")
 }

@@ -1,14 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Patch, Param, Delete } from '@nestjs/common';
 import { MatriculaService } from './matricula.service';
-import {MatriculaDTO} from './matricula.dto.ts';
+import { MatriculaDTO } from './matricula.dto';
+
 
 @Controller('matricula')
 export class MatriculaController {
   constructor(private readonly matriculaService: MatriculaService) {}
 
   @Post()
-  create(@Body() MatriculaDTO: MatriculaDTO) {
-    return this.matriculaService.create(MatriculaDTO);
+  create(@Body() data: MatriculaDTO) {
+    return this.matriculaService.create(data);
   }
 
   @Get()
@@ -18,16 +19,23 @@ export class MatriculaController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.matriculaService.findOne(+id);
+    return this.matriculaService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() MatriculaDTO: MatriculaDTO) {
-    return this.matriculaService.update(+id, MatriculaDTO);
+  @Put(':id')
+  update(@Param('id') id: string, @Body() data: MatriculaDTO) {
+    return this.matriculaService.update(id, data);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.matriculaService.remove(+id);
+    return this.matriculaService.remove(id);
   }
+
+  //matricula/aluno/{ID_DO_ALUNO}/modulos
+  @Get('/alunos/:id_aluno/modulos')
+  findModulosByAlunoId(@Param('id_aluno') id_aluno: string){
+    return this.matriculaService.findModulosByAlunoId(id_aluno);
+  }
+
 }

@@ -1,26 +1,58 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMatriculaDto } from './dto/create-matricula.dto';
-import { UpdateMatriculaDto } from './dto/update-matricula.dto';
+import { MatriculaDTO } from './matricula.dto';
+import { PrismaService } from 'src/database/PrismaService';
+
 
 @Injectable()
 export class MatriculaService {
-  create(createMatriculaDto: CreateMatriculaDto) {
-    return 'This action adds a new matricula';
+  constructor(private prisma: PrismaService) { }
+
+  //Criar (create)
+  async create(data: MatriculaDTO) {
+    return this.prisma.matricula.create({ data });
   }
 
-  findAll() {
-    return `This action returns all matricula`;
+  //Ler (read) - para listar todos
+  async findAll() {
+    return this.prisma.matricula.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} matricula`;
+  //Para buscar por id
+  async findOne(id: string) {
+    return this.prisma.matricula.findUnique(
+      { where: { 
+          id 
+        }
+      });
   }
 
-  update(id: number, updateMatriculaDto: UpdateMatriculaDto) {
-    return `This action updates a #${id} matricula`;
+  //Editar (update)
+  async update(id: string, data: MatriculaDTO) {
+    return this.prisma.matricula.update({
+      where: { id },
+      data,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} matricula`;
+  //Excluir (delete)
+  async remove(id: string) {
+    return this.prisma.matricula.delete({
+      where: { id }
+    });
   }
+
+  // Consulta os módulos com base no id do aluno(id_aluno)
+  // Busca registros na tabela Matricula que correspondem ao id do aluno e, 
+  // em seguida, busca os módulos associados a esses registros
+  async findModulosByAlunoId (id_aluno: string){
+    return this.prisma.matricula.findMany({
+      where: { id_aluno },
+      select: {
+        id_modulo: true, // Selecione informações do módulo relacionado
+      },
+      // include: {
+      //   moduloId: true, // incluir os detalhes completos do módulo na resposta
+      // },
+    });
+  } 
 }
