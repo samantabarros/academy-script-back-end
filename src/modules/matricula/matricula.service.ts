@@ -8,9 +8,13 @@ export class MatriculaService {
   constructor(private prisma: PrismaService) { }
 
   //Criar (create)
-  async create(data: MatriculaDTO) {
-    return this.prisma.matricula.create({ data });
+  async create(data) {
+    const matricula = await this.prisma.matricula.create({
+      data
+    });
+    return matricula;
   }
+
 
   //Ler (read) - para listar todos
   async findAll() {
@@ -47,12 +51,9 @@ export class MatriculaService {
   async findModulosByAlunoId (id_aluno: string){
     return this.prisma.matricula.findMany({
       where: { id_aluno },
-      select: {
-        id_modulo: true, // Selecione informações do módulo relacionado
-      },
-      // include: {
-      //   moduloId: true, // incluir os detalhes completos do módulo na resposta
-      // },
+      include: {
+        moduloId: true
+      }
     });
   } 
 }

@@ -1,5 +1,5 @@
 export type ModuloDTO = {
-  id?: string;
+  id: string;
   nome_modulo: string;
   nota1: number;
   nota2: number;

@@ -33,7 +33,7 @@ export class MatriculaController {
   }
 
   //matricula/aluno/{ID_DO_ALUNO}/modulos
-  @Get('/alunos/:id_aluno/modulos')
+  @Get('modulos-aluno/alunos/:id_aluno')
   findModulosByAlunoId(@Param('id_aluno') id_aluno: string){
     return this.matriculaService.findModulosByAlunoId(id_aluno);
   }
