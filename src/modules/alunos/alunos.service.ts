@@ -54,7 +54,12 @@ export class AlunosService {
         id: id
       },
       include: {
-        Matricula: true
+        Matricula: {
+          include:{
+            moduloId: true
+          }
+        }
+
       }
 
     })
