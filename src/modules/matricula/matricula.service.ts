@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { MatriculaDTO } from './matricula.dto';
 import { PrismaService } from 'src/database/PrismaService';
 
@@ -9,9 +9,21 @@ export class MatriculaService {
 
   //Criar (create)
   async create(data) {
+    const existsMatricula = await this.prisma.aluno.findFirst({
+     where:{
+      //Se o id_aluno já estiver associado ao id_modulo
+     }
+    })
+    console.log(data)
+    
+    if(existsMatricula){
+      throw new ConflictException('Esse aluno já está cadastrado nesse módulo');
+    }
+
     const matricula = await this.prisma.matricula.create({
       data
     });
+
     return matricula;
   }
 

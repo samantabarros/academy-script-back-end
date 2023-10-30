@@ -39,9 +39,9 @@ model Modulo {
 
 model Matricula {
   id        String  @id @default(uuid())
-  nota1     Float
-  nota2     Float
-  nota3     Float
+  nota1     Float?
+  nota2     Float?
+  nota3     Float?
   id_aluno  String
   alunoId   Aluno?  @relation(fields: [id_aluno], references: [id])
   id_modulo String

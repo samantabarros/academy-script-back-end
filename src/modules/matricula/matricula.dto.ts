@@ -1,5 +1,5 @@
 export type MatriculaDTO = {
-    id: string;
+    //id: string;
     nota1?: number;
     nota2?: number;
     nota3?: number;
