@@ -1,12 +1,14 @@
 import { ConflictException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { AlunoDTO } from './alunos.dto';
+import { CreateAlunoDto } from './dto/create-aluno.dto';
+import { UpdateAlunoDto } from './dto/update-aluno.dto';
 
 @Injectable()
 export class AlunosService {
   constructor(private prisma: PrismaService) { }
   //Dessa forma o service não fica refem do Prisma (desaclopa)
-  async create(data: AlunoDTO) {
+  async create(data: CreateAlunoDto) {
     //Cria um aluno
     const alunoExists = await this.prisma.aluno.findFirst({
       where: {
@@ -66,7 +68,7 @@ export class AlunosService {
   }
 
   //Atualiza aluno
-  async update(id: string, data: AlunoDTO) {
+  async update(id: string, data: UpdateAlunoDto) {
     try {
       return await this.prisma.aluno.update({
         data,

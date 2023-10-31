@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { UsuariosDTO } from './usuarios.dto';
 import { PrismaService } from 'src/database/PrismaService';
+import { CreateAlunoDto } from '../alunos/dto/create-aluno.dto';
+import { UpdateAlunoDto } from '../alunos/dto/update-aluno.dto';
+import { CreateUsuarioDto } from './dto/create-usuario.dto';
+import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 
 @Injectable()
 export class UsuariosService {
   constructor(private prisma: PrismaService) {}
   //Dessa forma o service não fica refem do Prisma (desaclopa)
-  async create(data: UsuariosDTO) {
+  async create(data: CreateUsuarioDto) {
     const usuarioExists = await this.prisma.usuario.findFirst({
       where: {
         email: data.email,
@@ -26,7 +30,7 @@ export class UsuariosService {
     return this.prisma.usuario.findMany();
   }
 
-  async update(id: string, data: UsuariosDTO) {
+  async update(id: string, data: UpdateUsuarioDto) {
     const usuarioExists = await this.prisma.usuario.findUnique({
       where: {
         id,

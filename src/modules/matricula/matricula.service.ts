@@ -1,6 +1,7 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { MatriculaDTO } from './matricula.dto';
 import { PrismaService } from 'src/database/PrismaService';
+import { UpdateMatriculaDto } from './dto/update-matricula.dto';
 
 
 @Injectable()
@@ -9,15 +10,15 @@ export class MatriculaService {
 
   //Criar (create)
   async create(data) {
-    const existsMatricula = await this.prisma.aluno.findFirst({
+    const existsMatricula = await this.prisma.matricula.findFirst({
      where:{
-      //Se o id_aluno já estiver associado ao id_modulo
+      id_aluno: data.id_aluno, id_modulo: data.id_modulo
      }
     })
     console.log(data)
     
     if(existsMatricula){
-      throw new ConflictException('Esse aluno já está cadastrado nesse módulo');
+      throw new HttpException('Esse aluno já está cadastrado nesse módulo!', HttpStatus.BAD_REQUEST);
     }
 
     const matricula = await this.prisma.matricula.create({
@@ -43,9 +44,17 @@ export class MatriculaService {
   }
 
   //Editar (update)
-  async update(id: string, data: MatriculaDTO) {
+  async update(id: string, data: UpdateMatriculaDto) {
+    console.log(id);
+    console.log(data);
+    //Alterar essa lógica depois (enviar o id da matricula em vez do id do aluno)
+    const matricula = await this.prisma.matricula.findFirst({
+      where:{
+        id_aluno:data.id_aluno, id_modulo:data.id_modulo
+      }
+  });
     return this.prisma.matricula.update({
-      where: { id },
+      where: { id: matricula.id },
       data,
     });
   }

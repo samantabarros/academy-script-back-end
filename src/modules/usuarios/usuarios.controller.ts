@@ -9,13 +9,17 @@ import {
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { UsuariosDTO } from './usuarios.dto';
+import { CreateAlunoDto } from '../alunos/dto/create-aluno.dto';
+import { UpdateAlunoDto } from '../alunos/dto/update-aluno.dto';
+import { CreateUsuarioDto } from './dto/create-usuario.dto';
+import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 
 @Controller('usuarios')
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
   //Cria o usuario
   @Post()
-  async create(@Body() data: UsuariosDTO) {
+  async create(@Body() data: CreateUsuarioDto) {
     return this.usuariosService.create(data);
   }
 
@@ -27,7 +31,7 @@ export class UsuariosController {
 
   //Altera o usuario
   @Put(':id')
-  async update(@Param('id') id: string, @Body() data: UsuariosDTO) {
+  async update(@Param('id') id: string, @Body() data: UpdateUsuarioDto) {
     return this.usuariosService.update(id, data);
   }
 

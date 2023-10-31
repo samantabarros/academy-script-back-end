@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { ModuloDTO } from './modulos.dto';
+import { CreateModuloDto } from './dto/create-modulo.dto';
+import { UpdateModuloDto } from './dto/update-modulo.dto';
 
 @Injectable()
 export class ModulosService {
   constructor(private prisma: PrismaService) {}
   //Dessa forma o service não fica refem do Prisma (desaclopa)
-  async create(data: ModuloDTO) {
+  async create(data: CreateModuloDto) {
     // const moduloExists = await this.prisma.modulo.findFirst({
     //   where: {
     //     nome_modulo: data.nome_modulo,
@@ -28,7 +30,7 @@ export class ModulosService {
     return this.prisma.modulo.findMany();
   }
 
-  async update(id: string, data: ModuloDTO) {
+  async update(id: string, data: UpdateModuloDto) {
     const moduloExists = await this.prisma.modulo.findFirst({
       where: {
         id,

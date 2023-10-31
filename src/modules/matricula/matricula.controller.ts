@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Put, Body, Patch, Param, Delete } from '@nestjs/common';
 import { MatriculaService } from './matricula.service';
 import { MatriculaDTO } from './matricula.dto';
+import { CreateMatriculaDto } from './dto/create-matricula.dto';
+import { UpdateMatriculaDto } from './dto/update-matricula.dto';
 
 
 @Controller('matricula')
@@ -8,7 +10,7 @@ export class MatriculaController {
   constructor(private readonly matriculaService: MatriculaService) {}
 
   @Post()
-  create(@Body() data: MatriculaDTO) {
+  create(@Body() data: CreateMatriculaDto) {
     return this.matriculaService.create(data);
   }
 
@@ -23,7 +25,7 @@ export class MatriculaController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() data: MatriculaDTO) {
+  update(@Param('id') id: string, @Body() data: UpdateMatriculaDto) {
     return this.matriculaService.update(id, data);
   }
 

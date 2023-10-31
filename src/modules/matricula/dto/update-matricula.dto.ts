@@ -1,4 +1,8 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateMatriculaDto } from './create-matricula.dto';
 
-export class UpdateMatriculaDto extends PartialType(CreateMatriculaDto) {}
+export class UpdateMatriculaDto {
+    id_aluno: string;
+    id_modulo: string;
+    nota1?: number;
+    nota2?: number;
+    nota3?: number;
+}

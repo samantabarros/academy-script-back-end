@@ -9,12 +9,14 @@ import {
 } from '@nestjs/common';
 import { ModulosService } from './modulos.service';
 import { ModuloDTO } from './modulos.dto';
+import { CreateModuloDto } from './dto/create-modulo.dto';
+import { UpdateModuloDto } from './dto/update-modulo.dto';
 @Controller('modulos')
 export class ModulosController {
   constructor(private readonly modulosService: ModulosService) {}
   //Cadastra o modulo
   @Post()
-  async create(@Body() data: ModuloDTO) {
+  async create(@Body() data: CreateModuloDto) {
     return this.modulosService.create(data);
   }
 
@@ -26,7 +28,7 @@ export class ModulosController {
 
   //Edita um modulo
   @Put(':id')
-  async update(@Param('id') id: string, @Body() data: ModuloDTO) {
+  async update(@Param('id') id: string, @Body() data: UpdateModuloDto) {
     return this.modulosService.update(id, data);
   }
   //Deleta um modulo
