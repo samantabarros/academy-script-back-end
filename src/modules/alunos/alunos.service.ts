@@ -26,10 +26,6 @@ export class AlunosService {
     //const dataFormatada = data.data_nascimento;
 
     const aluno = await this.prisma.aluno.create({
-      // data: {
-      //   cpf: data.cpf,
-      //   //data_nascimento: dataFormatada,
-      // },
       data
     });
 

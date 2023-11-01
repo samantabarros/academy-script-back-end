@@ -10,16 +10,16 @@ export class MatriculaService {
 
   //Criar (create)
   async create(data) {
-    const existsMatricula = await this.prisma.matricula.findFirst({
-     where:{
-      id_aluno: data.id_aluno, id_modulo: data.id_modulo
-     }
-    })
-    console.log(data)
+    // const existsMatricula = await this.prisma.matricula.findFirst({
+    //  where:{
+    //   id_aluno: data.id_aluno, id_modulo: data.id_modulo
+    //  }
+    // })
+    // console.log(data)
     
-    if(existsMatricula){
-      throw new HttpException('Esse aluno já está cadastrado nesse módulo!', HttpStatus.BAD_REQUEST);
-    }
+    // if(existsMatricula){
+    //   throw new HttpException('Esse aluno já está cadastrado nesse módulo!', HttpStatus.BAD_REQUEST);
+    // }
 
     const matricula = await this.prisma.matricula.create({
       data
