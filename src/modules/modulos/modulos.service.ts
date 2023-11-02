@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
-import { ModuloDTO } from './modulos.dto';
 import { CreateModuloDto } from './dto/create-modulo.dto';
 import { UpdateModuloDto } from './dto/update-modulo.dto';
 
@@ -9,17 +8,15 @@ export class ModulosService {
   constructor(private prisma: PrismaService) {}
   //Dessa forma o service não fica refem do Prisma (desaclopa)
   async create(data: CreateModuloDto) {
-    // const moduloExists = await this.prisma.modulo.findFirst({
-    //   where: {
-    //     nome_modulo: data.nome_modulo,
-    //     id_aluno: data.id_aluno,
-    //   },
-    // });
-    //console.Console.log();
+    const moduloExists = await this.prisma.modulo.findFirst({
+      where: {
+        nome_modulo: data.nome_modulo,
+      },
+    });
 
-    // if (moduloExists) {
-    //   throw new Error('Esse modulo ja esta cadastrado no sistema');
-    // }
+    if (moduloExists) {
+      throw new Error('Esse modulo ja esta cadastrado no sistema');
+    }
     const modulo = await this.prisma.modulo.create({
       data,
     });

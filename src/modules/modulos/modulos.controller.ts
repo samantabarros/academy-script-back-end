@@ -8,7 +8,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { ModulosService } from './modulos.service';
-import { ModuloDTO } from './modulos.dto';
 import { CreateModuloDto } from './dto/create-modulo.dto';
 import { UpdateModuloDto } from './dto/update-modulo.dto';
 @Controller('modulos')

@@ -1,5 +1,4 @@
 import { ConflictException, HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { MatriculaDTO } from './matricula.dto';
 import { PrismaService } from 'src/database/PrismaService';
 import { UpdateMatriculaDto } from './dto/update-matricula.dto';
 
