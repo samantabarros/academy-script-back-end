@@ -1,6 +1,7 @@
 import { ConflictException, HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { UpdateMatriculaDto } from './dto/update-matricula.dto';
+import { CreateMatriculaDto } from './dto/create-matricula.dto';
 
 
 @Injectable()
@@ -8,7 +9,7 @@ export class MatriculaService {
   constructor(private prisma: PrismaService) { }
 
   //Criar (create)
-  async create(data) {
+  async create(data: CreateMatriculaDto) {
     // const existsMatricula = await this.prisma.matricula.findFirst({
     //  where:{
     //   id_aluno: data.id_aluno, id_modulo: data.id_modulo
