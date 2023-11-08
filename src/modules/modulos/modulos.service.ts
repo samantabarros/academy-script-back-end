@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { CreateModuloDto } from './dto/create-modulo.dto';
 import { UpdateModuloDto } from './dto/update-modulo.dto';
@@ -15,7 +15,7 @@ export class ModulosService {
     });
 
     if (moduloExists) {
-      throw new Error('Esse modulo ja esta cadastrado no sistema');
+      throw new ConflictException('Esse modulo já esta cadastrado no sistema');
     }
     const modulo = await this.prisma.modulo.create({
       data,
