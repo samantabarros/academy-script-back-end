@@ -10,28 +10,30 @@ export class MatriculaService {
 
   //Criar (create)
   async create(data: CreateMatriculaDto) {
-    // const existsMatricula = await this.prisma.matricula.findFirst({
-    //  where:{
-    //   id_aluno: data.id_aluno, id_modulo: data.id_modulo
-    //  }
-    // })
-    // console.log(data)
+    const existsMatricula = await this.prisma.matricula.findFirst({
+     where:{
+      id_aluno: data.id_aluno, id_modulo: data.id_modulo
+     }
+    })
+    console.log(data)
     
-    // if(existsMatricula){
-    //   throw new HttpException('Esse aluno já está cadastrado nesse módulo!', HttpStatus.BAD_REQUEST);
-    // }
+    if(existsMatricula){
+      throw new HttpException('Esse aluno já está cadastrado nesse módulo!', HttpStatus.BAD_REQUEST);
+    }
 
     const matricula = await this.prisma.matricula.create({
       data
+      
     });
 
     return matricula;
   }
 
 
-  //Ler (read) - para listar todos
+  //Ler (read) - para listar todos os módulos
   async findAll() {
     return this.prisma.matricula.findMany();
+    
   }
 
   //Para buscar por id
