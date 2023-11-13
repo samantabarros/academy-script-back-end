@@ -79,4 +79,13 @@ export class MatriculaService {
       }
     });
   } 
+
+  async findAlunosByModuloId (id_modulo: string){
+    return this.prisma.matricula.findMany({
+      where: { id_modulo },
+      include: {
+        alunoId: true 
+      }
+    });
+  }
 }

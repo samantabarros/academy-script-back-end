@@ -25,6 +25,12 @@ export class ModulosController {
     return this.modulosService.findAll();
   }
 
+
+  @Get(':id')
+  async findById(@Param('id') id: string) {
+    return this.modulosService.findById(id);
+  }
+
   //Edita um modulo
   @Put(':id')
   async update(@Param('id') id: string, @Body() data: UpdateModuloDto) {

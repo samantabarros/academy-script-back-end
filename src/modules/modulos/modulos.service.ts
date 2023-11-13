@@ -27,6 +27,21 @@ export class ModulosService {
     return this.prisma.modulo.findMany();
   }
 
+  async findById(id: string) {
+    return this.prisma.modulo.findFirst({
+      where:{
+        id:id
+      },
+      include:{
+        Matricula: {
+          include: {
+            alunoId: true
+          }
+        }
+      }
+    })
+  }
+
   async update(id: string, data: UpdateModuloDto) {
     const moduloExists = await this.prisma.modulo.findFirst({
       where: {
