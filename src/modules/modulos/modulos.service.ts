@@ -24,7 +24,12 @@ export class ModulosService {
   }
 
   async findAll() {
-    return this.prisma.modulo.findMany();
+    return this.prisma.modulo.findMany({
+      orderBy: {
+        nome_modulo: 'asc',
+      },
+    });
+    
   }
 
   async findById(id: string) {
@@ -38,7 +43,7 @@ export class ModulosService {
             alunoId: true
           }
         }
-      }
+      },
     })
   }
 

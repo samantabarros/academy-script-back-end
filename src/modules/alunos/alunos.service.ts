@@ -56,7 +56,6 @@ export class AlunosService {
             moduloId: true
           }
         }
-
       }
 
     })
