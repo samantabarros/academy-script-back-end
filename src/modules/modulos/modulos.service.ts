@@ -70,11 +70,26 @@ export class ModulosService {
 
     if (!moduloExists) {
       throw new Error('Esse modulo nao existe!');
+    }else{
+      const existeAlunos = await this.prisma.matricula.findMany({
+        where:{
+          id_modulo:id,
+        },
+      });
+
+      if(existeAlunos) {
+        await this.prisma.matricula.deleteMany({
+          where: {
+            id_modulo: id,
+          }
+        });
+      }
+      const res = await this.prisma.modulo.delete({
+        where: {
+          id, 
+        },
+      });
+      return res;
     }
-    return await this.prisma.modulo.delete({
-      where: {
-        id,
-      },
-    });
-  }
+  }//fim de delete
 } //fim class ModulosService
