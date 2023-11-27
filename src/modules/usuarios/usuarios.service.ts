@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/database/PrismaService';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
@@ -6,21 +7,32 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 @Injectable()
 export class UsuariosService {
   constructor(private prisma: PrismaService) {}
+
   //Dessa forma o service não fica refem do Prisma (desaclopa)
-  async create(data: CreateUsuarioDto) {
+  async create(createUsuarioDto: CreateUsuarioDto) {
     const usuarioExists = await this.prisma.usuario.findFirst({
       where: {
-        email: data.email,
+        email: createUsuarioDto.email,
       },
     });
     if (usuarioExists) {
       throw new Error('Esse usuario ja existe no sistema');
     }
-    const usuario = await this.prisma.usuario.create({
-      data,
-    });
 
-    return usuario;
+    //colocar o usuário no banco
+    const data = {
+      ...createUsuarioDto,
+      senha: await bcrypt.hash(createUsuarioDto.senha, 10),
+    };
+
+    //Colocar o usuário no prisma (usuário no banco de dados)
+    const usuarioCriado = await this.prisma.usuario.create({ data });
+
+    return {
+      ...usuarioCriado,
+      senha: undefined,
+    };
+    //return usuario;
   }
 
   async findAll() {
