@@ -8,8 +8,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
-import { CreateAlunoDto } from '../alunos/dto/create-aluno.dto';
-import { UpdateAlunoDto } from '../alunos/dto/update-aluno.dto';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 
