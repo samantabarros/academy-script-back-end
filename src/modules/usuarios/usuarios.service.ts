@@ -48,7 +48,7 @@ export class UsuariosService {
     return this.prisma.usuario.findMany();
   }
 
-  async update(id: string, data: UpdateUsuarioDto) {
+  async update(id: string, updateUsuarioDto: UpdateUsuarioDto) {
     const usuarioExists = await this.prisma.usuario.findUnique({
       where: {
         id,
@@ -59,7 +59,7 @@ export class UsuariosService {
       throw new Error('Usuario nao existe!');
     }
     return await this.prisma.usuario.update({
-      data,
+      data: updateUsuarioDto,
       where: {
         id,
       },

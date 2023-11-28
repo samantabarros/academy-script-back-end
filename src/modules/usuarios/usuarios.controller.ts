@@ -26,7 +26,7 @@ export class UsuariosController {
     return this.usuariosService.findAll();
   }
 
-  @Get(':email')
+  @Get('email')
   async findByEmail(@Param('email') email: string) {
     return this.usuariosService.findByEmail(email);
   }
