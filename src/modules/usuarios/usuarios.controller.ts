@@ -26,6 +26,10 @@ export class UsuariosController {
     return this.usuariosService.findAll();
   }
 
+  @Get(':email')
+  async findByEmail(@Param('email') email: string) {
+    return this.usuariosService.findByEmail(email);
+  }
   //Altera o usuario
   @Put(':id')
   async update(@Param('id') id: string, @Body() data: UpdateUsuarioDto) {

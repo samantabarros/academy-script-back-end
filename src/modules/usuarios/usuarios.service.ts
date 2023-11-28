@@ -16,7 +16,7 @@ export class UsuariosService {
       },
     });
     if (usuarioExists) {
-      throw new Error('Esse usuario ja existe no sistema');
+      throw new Error('Esse usuario já existe no sistema');
     }
 
     //colocar o usuário no banco
@@ -33,6 +33,15 @@ export class UsuariosService {
       senha: undefined,
     };
     //return usuario;
+  }
+
+
+  async findByEmail(email: string) {
+    return this.prisma.usuario.findFirst({ 
+      where: { 
+        email
+      },
+     });
   }
 
   async findAll() {
