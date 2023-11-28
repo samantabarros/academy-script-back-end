@@ -7,7 +7,8 @@ export class AuthService {
     constructor(private readonly usuariosService: UsuariosService) {}
        
     async validarUsuario(email: string, senha: string) {
-        const usuario = await this.usuariosService.findByEmail('email');
+        const usuario = await this.usuariosService.findByEmail(email);
+        console.log(usuario);
 
         if(usuario){
             //Checa se a senha informada é igual a hash que está no banco
@@ -20,8 +21,7 @@ export class AuthService {
                 };
             }
         }
-        //Se chegar aqui seginifica que não encontrou o usuário e/ou a senha fornecida não corresponde
-        throw new Error("Endereço de email ou senha informada estão incorretos!")
-
+        //Se chegar aqui significa que não encontrou o usuário e/ou a senha fornecida não corresponde
+        throw new Error('Endereço de email ou senha informada estão incorretos!')
     }
 }

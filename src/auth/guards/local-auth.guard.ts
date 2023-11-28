@@ -11,9 +11,13 @@ import {
       return super.canActivate(context);
     }
   
-    handleRequest(err, usuario) {
+    handleRequest(err) {
+      //Fazer a lógica do validate
+      //Aqui eu devo buscar pelo usuario
+      
       if (err || !usuario) {
-        throw new UnauthorizedException(err?.message);
+        console.log(err);
+        throw new UnauthorizedException("Erro ao executar login!");
       }
   
       return usuario;

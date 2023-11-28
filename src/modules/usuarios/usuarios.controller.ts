@@ -16,8 +16,8 @@ export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
   //Cria o usuario
   @Post()
-  async create(@Body() data: CreateUsuarioDto) {
-    return this.usuariosService.create(data);
+  async create(@Body() createUsuarioDto: CreateUsuarioDto) {
+    return this.usuariosService.create(createUsuarioDto);
   }
 
   //Lista o usuario
@@ -26,14 +26,14 @@ export class UsuariosController {
     return this.usuariosService.findAll();
   }
 
-  @Get('email')
+  @Get(':email')
   async findByEmail(@Param('email') email: string) {
     return this.usuariosService.findByEmail(email);
   }
   //Altera o usuario
   @Put(':id')
-  async update(@Param('id') id: string, @Body() data: UpdateUsuarioDto) {
-    return this.usuariosService.update(id, data);
+  async update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
+    return this.usuariosService.update(id, updateUsuarioDto);
   }
 
   @Delete(':id')

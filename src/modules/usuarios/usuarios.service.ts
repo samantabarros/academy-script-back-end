@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/database/PrismaService';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { IsEmail } from 'class-validator';
 
 @Injectable()
 export class UsuariosService {
@@ -37,6 +38,7 @@ export class UsuariosService {
 
 
   async findByEmail(email: string) {
+    console.log(email);
     return this.prisma.usuario.findFirst({ 
       where: { 
         email
