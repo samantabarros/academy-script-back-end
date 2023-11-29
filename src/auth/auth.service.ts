@@ -2,33 +2,48 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { Usuario } from 'src/modules/usuarios/entities/usuario.entity';
 import { UsuariosService } from 'src/modules/usuarios/usuarios.service';
+import { UsuarioPayload } from './models/UsuarioPayload';
+import { JwtService } from '@nestjs/jwt';
+import { UsuarioToken } from './models/UsuarioToken';
 
 @Injectable()
 export class AuthService {
-    
-    constructor(private usuariosService: UsuariosService) {}
+  constructor(
+    private jwtService: JwtService,
+    private usuariosService: UsuariosService) {}
 
-    login(usuario: Usuario) {
-        throw new Error('Method not implemented.');
+  async login(usuario: Usuario): Promise <UsuarioToken> {
+    //Transforma o usuario em JWT
+    //console.log("Chegou em login");
+    const payload: UsuarioPayload = {
+        sub: usuario.id,
+        email: usuario.email
+    };
+
+    const jwtToken = this.jwtService.sign(payload);
+    return {
+        acess_token: jwtToken, 
     }
-       
-    async validarUsuario(email: string, senha: string) {
-        console.log("Entrou em validar usuário");
-        const usuario = await this.usuariosService.findByEmail(email);
-        console.log(usuario);
 
-        if(usuario){
-            //Checa se a senha informada é igual a hash que está no banco
-            const senhaValida = await bcrypt.compare(senha, usuario.senha);
+  }
 
-            if(senhaValida){
-                return {
-                    ...usuario,
-                    senha: undefined,
-                };
-            }
-        }
-        //Se chegar aqui significa que não encontrou o usuário e/ou a senha fornecida não corresponde
-        throw new Error('Endereço de email ou senha informada estão incorretos!')
+  async validarUsuario(email: string, senha: string): Promise<Usuario>{
+    console.log('Entrou em validar usuário');
+    const usuario = await this.usuariosService.findByEmail(email);
+    //console.log(usuario);
+
+    if (usuario) {
+      //Checa se a senha informada é igual a hash que está no banco
+      const senhaValida = await bcrypt.compare(senha, usuario.senha);
+
+      if (senhaValida) {
+        return {
+          ...usuario,
+          senha: undefined,
+        };
+      }
     }
+    //Se chegar aqui significa que não encontrou o usuário e/ou a senha fornecida não corresponde
+    throw new Error('Endereço de email ou senha informada estão incorretos!');
+  }
 }

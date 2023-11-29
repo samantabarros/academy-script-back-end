@@ -12,7 +12,7 @@ datasource db {
 
 model Usuario {
   id    String @id @default(uuid())
-  email String //usuario login
+  email String @unique//usuario login
   senha String
 
   @@map("usuarios") //Nome da tabela

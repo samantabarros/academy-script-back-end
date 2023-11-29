@@ -6,12 +6,13 @@ import { AuthRequest } from './models/AuthRequest';
 @Controller()
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
-    //@UseGuards(LocalAuthGuard)
+    @UseGuards(LocalAuthGuard)
     @Post('login')
     @HttpCode(HttpStatus.OK)
     async login(@Request() req: AuthRequest){
         //usuario não está chegando aqui (undefined)
-        console.log(req.usuario);
+        //console.log(req.usuario);
+        //console.log("Chegou aqui controller login")
         return this.authService.login(req.usuario);
     }
 }
