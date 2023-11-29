@@ -1,12 +1,19 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { Usuario } from 'src/modules/usuarios/entities/usuario.entity';
 import { UsuariosService } from 'src/modules/usuarios/usuarios.service';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly usuariosService: UsuariosService) {}
+    
+    constructor(private usuariosService: UsuariosService) {}
+
+    login(usuario: Usuario) {
+        throw new Error('Method not implemented.');
+    }
        
     async validarUsuario(email: string, senha: string) {
+        console.log("Entrou em validar usuário");
         const usuario = await this.usuariosService.findByEmail(email);
         console.log(usuario);
 
