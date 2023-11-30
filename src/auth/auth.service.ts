@@ -14,12 +14,12 @@ export class AuthService {
 
   async login(usuario: Usuario): Promise <UsuarioToken> {
     //Transforma o usuario em JWT
-    //console.log("Chegou em login");
+    //console.log("Usuário:" + usuario);
     const payload: UsuarioPayload = {
         sub: usuario.id,
         email: usuario.email
     };
-    console.log(payload);
+    //console.log(payload);
 
     const jwtToken = this.jwtService.sign(payload);
     return {
@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   async validarUsuario(email: string, password: string): Promise<Usuario>{
-    console.log('Entrou em validar usuário');
+    //console.log('Entrou em validar usuário');
     const usuario = await this.usuariosService.findByEmail(email);
     //console.log(usuario);
 
