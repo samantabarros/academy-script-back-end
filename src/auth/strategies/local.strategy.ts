@@ -9,8 +9,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     super({ usernameField: 'email' });
   }
 
-  validate(email: string, senha: string) {
+  validate(email: string, password: string) {
     //console.log("entrou em validate")
-    return this.authService.validarUsuario(email, senha);
+    return this.authService.validarUsuario(email, password);
   }
 }

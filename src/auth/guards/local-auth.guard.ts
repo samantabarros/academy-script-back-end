@@ -11,14 +11,14 @@ export class LocalAuthGuard extends AuthGuard('local') {
     return super.canActivate(context);
   }
 
-  handleRequest(err, usuario) {
-    console.log("Entrou em Handle Request")
-    console.log(err)
-    console.log(usuario)
-    if (err || !usuario) {
+  handleRequest(err, user) {
+    //console.log("Entrou em Handle Request")
+    //console.log(err)
+    //console.log(user)
+    if (err || !user) {
       throw new UnauthorizedException(err?.message);
     }
 
-    return usuario;
+    return user;
   }
 }

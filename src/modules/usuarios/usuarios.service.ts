@@ -39,7 +39,7 @@ export class UsuariosService {
 
   async findByEmail(email: string) {
     console.log(email);
-    return this.prisma.usuario.findUnique({ 
+    return this.prisma.usuario.findFirst({ 
       where: { 
         email
       },

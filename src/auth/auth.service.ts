@@ -19,6 +19,7 @@ export class AuthService {
         sub: usuario.id,
         email: usuario.email
     };
+    console.log(payload);
 
     const jwtToken = this.jwtService.sign(payload);
     return {
@@ -27,19 +28,19 @@ export class AuthService {
 
   }
 
-  async validarUsuario(email: string, senha: string): Promise<Usuario>{
+  async validarUsuario(email: string, password: string): Promise<Usuario>{
     console.log('Entrou em validar usuário');
     const usuario = await this.usuariosService.findByEmail(email);
     //console.log(usuario);
 
     if (usuario) {
       //Checa se a senha informada é igual a hash que está no banco
-      const senhaValida = await bcrypt.compare(senha, usuario.senha);
+      const senhaValida = await bcrypt.compare(password, usuario.senha);
 
       if (senhaValida) {
         return {
           ...usuario,
-          senha: undefined,
+          password: undefined,
         };
       }
     }
