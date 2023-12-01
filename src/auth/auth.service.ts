@@ -17,6 +17,7 @@ export class AuthService {
     //console.log("Usuário:" + usuario);
     const payload: UsuarioPayload = {
         sub: usuario.id,
+        senha: usuario.password,
         email: usuario.email
     };
     //console.log(payload);
