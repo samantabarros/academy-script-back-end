@@ -85,4 +85,9 @@ export class UsuariosService {
       },
     });
   }
+
+  // async getMe() {
+  //   return 'Informações de me'
+  // }
+  
 } //fim class UsuariosService

@@ -10,6 +10,8 @@ import {
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { Usuario } from '@prisma/client';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -39,5 +41,11 @@ export class UsuariosController {
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return this.usuariosService.delete(id);
+  }
+
+  @Get('me')
+  async getMe(@CurrentUser() user: Usuario) {
+    // return this.usuariosService.getMe();
+    return user;
   }
 }
