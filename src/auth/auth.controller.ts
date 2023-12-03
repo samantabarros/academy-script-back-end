@@ -9,7 +9,7 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
     @IsPublic()
     @UseGuards(LocalAuthGuard)
-    @Post('login')
+    @Post('auth')
     @HttpCode(HttpStatus.OK)
     async login(@Request() req: AuthRequest){
         //o nome da variável tem que ser user

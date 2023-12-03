@@ -5,6 +5,7 @@ import { UsuariosService } from 'src/modules/usuarios/usuarios.service';
 import { UsuarioPayload } from './models/UsuarioPayload';
 import { JwtService } from '@nestjs/jwt';
 import { UsuarioToken } from './models/UsuarioToken';
+import { response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +25,9 @@ export class AuthService {
 
     const jwtToken = this.jwtService.sign(payload);
     return {
-        acess_token: jwtToken, 
+        acess_token: jwtToken,
+        id_user: usuario.id,
+        email_user: usuario.email,
     }
 
   }
@@ -47,5 +50,6 @@ export class AuthService {
     }
     //Se chegar aqui significa que não encontrou o usuário e/ou a senha fornecida não corresponde
     throw new Error('Endereço de email ou senha informada estão incorretos!');
+    
   }
 }
