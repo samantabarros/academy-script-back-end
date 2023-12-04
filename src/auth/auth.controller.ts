@@ -17,19 +17,4 @@ export class AuthController {
         //console.log("Chegou aqui controller login")
         return this.authService.login(req.user);
     }
-
-    @UseGuards(LocalAuthGuard)
-    @Get('auth/verify')
-    async verifyToken(@Request() req): Promise<any> {
-      try {
-        const token = req.headers.authorization.replace('Bearer ', '');
-        const decodedToken = this.authService.verify(token);
-        
-        // Se chegou até aqui, o token é válido
-        return { valid: true, decodedToken };
-      } catch (error) {
-        // Se houver um erro, o token é inválido
-        return { valid: false, error: error.message };
-      }
-    }
 }

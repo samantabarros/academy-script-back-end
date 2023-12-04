@@ -50,18 +50,8 @@ export class AuthService {
         }
       }
       //Se chegar aqui significa que não encontrou o usuário e/ou a senha fornecida não corresponde
-      throw new Error('Endereço de email ou senha informada estão incorretos!');
+      throw new Error('Usuário ou senha inválidos');
       
     }
-  
-    verify(token: string): any {
-      try {
-        const decoded = verify(token, this.secretKey);
-        return decoded;
-      } catch (error) {
-        throw new UnauthorizedException(error.message);
-      }
-    }
-
   }
   
