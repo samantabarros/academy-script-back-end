@@ -5,7 +5,6 @@ import { UsuariosService } from 'src/modules/usuarios/usuarios.service';
 import { UsuarioPayload } from './models/UsuarioPayload';
 import { JwtService } from '@nestjs/jwt';
 import { UsuarioToken } from './models/UsuarioToken';
-import { verify } from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
