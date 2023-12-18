@@ -41,7 +41,10 @@ export class ModulosService {
         Matricula: {
           include: {
             alunoId: true
-          }
+          },
+          orderBy: {
+            id_aluno: 'desc'
+          },
         }
       },
     })

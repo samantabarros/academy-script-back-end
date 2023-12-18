@@ -54,8 +54,12 @@ export class AlunosService {
         Matricula: {
           include:{
             moduloId: true
-          }
-        }
+          },
+          orderBy: {
+            id_modulo: 'desc'
+          },
+          
+        },
       }
 
     })
