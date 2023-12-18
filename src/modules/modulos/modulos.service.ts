@@ -29,26 +29,56 @@ export class ModulosService {
         nome_modulo: 'asc',
       },
     });
-    
   }
 
   async findById(id: string) {
     return this.prisma.modulo.findFirst({
-      where:{
-        id:id
+      where: {
+        id: id,
       },
-      include:{
+      include: {
         Matricula: {
           include: {
-            alunoId: true
+            alunoId: true,
           },
           orderBy: {
-            id_aluno: 'desc'
+            alunoId: {
+              nome_aluno: 'asc'
+            }
           },
-        }
+        },
       },
-    })
+    });
   }
+
+  // async findById(id: string) {
+  //   const matricula = await this.prisma.modulo.findFirst({
+  //     where: {
+  //       id:id,
+  //     },
+  //     include: {
+  //       Matricula: true,
+  //     },
+  //   });
+
+  //   if(!matricula) {
+  //     return null;
+  //   }
+
+  //   const matriculaComAluno = await this.prisma.matricula.findUnique({
+  //     where: {
+  //       id: matricula.Matricula.id,
+  //     },
+  //     include: {
+  //       alunoId: {
+  //         orderBy: {
+  //           nome_aluno: 'asc',
+  //         },
+  //       },
+  //     }
+
+  //   })
+  // }
 
   async update(id: string, data: UpdateModuloDto) {
     const moduloExists = await this.prisma.modulo.findFirst({
@@ -78,26 +108,26 @@ export class ModulosService {
 
     if (!moduloExists) {
       throw new Error('Esse modulo nao existe!');
-    }else{
+    } else {
       const existeAlunos = await this.prisma.matricula.findMany({
-        where:{
-          id_modulo:id,
+        where: {
+          id_modulo: id,
         },
       });
 
-      if(existeAlunos) {
+      if (existeAlunos) {
         await this.prisma.matricula.deleteMany({
           where: {
             id_modulo: id,
-          }
+          },
         });
       }
       const res = await this.prisma.modulo.delete({
         where: {
-          id, 
+          id,
         },
       });
       return res;
     }
-  }//fim de delete
+  } //fim de delete
 } //fim class ModulosService

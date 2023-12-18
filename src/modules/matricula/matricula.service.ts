@@ -39,9 +39,10 @@ export class MatriculaService {
   //Para buscar por id
   async findOne(id: string) {
     return this.prisma.matricula.findUnique(
-      { where: { 
+      { 
+        where: { 
           id 
-        }
+        },
       });
   }
 

@@ -50,15 +50,19 @@ export class AlunosService {
         //Procura o primeiro id que seja igual ao id que foi passado para findById
         id: id
       },
+      orderBy: {
+        //módulos em ordem alfabética
+      },
       include: {
         Matricula: {
           include:{
             moduloId: true
           },
           orderBy: {
-            id_modulo: 'desc'
-          },
-          
+            moduloId: {
+              nome_modulo: 'asc'
+            }
+          },     
         },
       }
 
