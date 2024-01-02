@@ -43,7 +43,7 @@ export class AlunosService {
       },
     });
   }
-
+  
   async findById(id: string) {
     return this.prisma.aluno.findFirst({
       where: {
