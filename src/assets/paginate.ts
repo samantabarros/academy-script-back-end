@@ -4,25 +4,22 @@ import { PrismaService } from 'src/database/PrismaService';
  * aceitará como argumento */
 interface propsType {
   module: string;
-  busca: string;
-  pagina: number;
   itensPorPagina: number;
-  querys?: Object;
+  pagina: number;
+  busca: string;
+  querys?: string;
   include?: string;
 }
 
 /* Função paginate que aceita um objeto com as propriedades especificadas
  * pela interface 'propsType' */
-export default async function paginate({
-  module,
-  busca,
-  pagina,
-  itensPorPagina,
-  querys,
-  include,
-}: propsType) {
+export default async function paginate(
+  { module, itensPorPagina, pagina, busca, querys, include },
+  propsType,
+) {
   //Criação da instância do PrismaService
   const prisma = new PrismaService();
+
   /* Cálculo do valor da variável skip: calcula o número de itens que devem
    * ser ignorados ao realizar a paginação com com base na página atual e na
    * quantidade de itens por página
@@ -32,7 +29,8 @@ export default async function paginate({
   /*Inicialização da variável query como um objeto vazio que será usado para
    * construir as condições de consulta
    */
-  let query = {};
+
+  let query = [];
 
   /* Condição de busca - se a propriedade busca estiver presente, adiciona uma condição à query
    * para buscar registros onde o nome contém a string especificada, sendo case-insensitive
@@ -40,7 +38,7 @@ export default async function paginate({
   if (busca) {
     query = Object.assign(query, {
       nome: {
-        contains: busca,
+        contains: 'busca',
         mode: 'insensitive',
       },
     });
@@ -48,10 +46,13 @@ export default async function paginate({
 
   //Condições adicionais - adiciona condições adicionais a query com base em um array de queries
   if (querys) {
-      query = Object.assign(querys);
+    query = Object.assign(query, querys);
   }
 
-  // Usa o Prisma  para contar o total de itens no banco de dados, considerando as condições especificadas na 'query'
+  /* Usa o Prisma  para contar o total de itens no banco de dados, considerando as condições especificadas na 'query'
+   * prisma[module] -> prisma.[usuario].count -> prisma.usuario.count
+   */
+
   const totalItens = await prisma[module].count({
     where: query,
   });
@@ -60,36 +61,66 @@ export default async function paginate({
   if (totalItens === 0) {
     return {
       data: [],
-      maxPag: 0,
+      maxPage: 0,
     };
   }
 
-  //Recuperação dos itens paginados
+  /* Recuperação dos itens paginados
+   * Recupera os itens paginados do banco de dados usando o Prisma, considerando as condições e a ordenação especificadas.
+   */
+
+  /* [module] ->  A propriedade 'module' é uma string passada como argumento para a função paginate. Ela representa a entidade
+   *  ou tabela do banco de dados da qual se deseja recuperar os dados. Se 'module' for 'User', a consulta será feita na tabela
+   * de usuários
+   */
+
+  /*
+   *findMany -> recupera vários registros que atendem a determinadas condições
+   */
   try {
     const itens = await prisma[module].findMany({
-        where: query,
-        skip, 
-        take: Number(itensPorPagina),
-        orderBV: {
-            createdAt: 'asc',
-        },
-        include: include && {
-            [include]: true,
-        },
+      //where -> Objeto que contém as condições de consulta
+      where: query,
+
+      /*skip -> número de itens que a consulta deve ignorar antes de começar a recuperar dados. Isso é calculado com base no
+       * número da página e na quantidade de itens por página
+       */
+      skip,
+
+      /* take -> número máximo de itens a serem recuperados pela consulta. Isso é determinado pela quantidade de itens por página
+       * definida
+       */
+      take: Number(itensPorPagina),
+      //Define a ordenação dos resultados. Os resultados são ordenados em ordem crescente com base na propriedade 'createdAt'
+
+      orderBy: {
+        createdAt: 'asc',
+      },
+
+      /*include -> Uma opção para incluir os dados relacionados na consulta. Uma parte dessa função usa um operador lógico '&&'
+       * para verificar se 'include' está definido antes de incluir dados relacionados.
+       * Se 'include' estiver definido, o objeto incluído na consulta será '{[include] : true'} indicando que os dados relacionados
+       * especificados por 'include' devem ser incluídos na resposta da consulta
+       */
+      include: include && { [include]: true },
     });
 
-    /* Calcula o número máximo de páginas ('maxPaginas), arrendondando para cima para garantir que 
+    /* Calcula o número máximo de páginas ('maxPaginas), arrendondando para cima para garantir que
      * todos os itens sejam exibidos
      */
     const maxPagRaw = Number(totalItens / itensPorPagina);
     const maxPaginas = Math.ceil(maxPagRaw);
 
+    //Retorno dos dados paginados
+    /* Retorna um objeto contendo os itens paginados ('data') e o número máximo de páginas. Se ocorrer um erro durante a execução,
+     * o código captura e loga o erro antes de lançá-lo novamente
+     */
     return {
-        data: itens,
-        maxPag: maxPaginas,
+      data: itens,
+      maxPage: maxPaginas,
     };
   } catch (error) {
     console.log(error.message);
-    throw new Error (error);
+    throw new Error(error);
   }
 }
