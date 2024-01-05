@@ -1,11 +1,17 @@
-import { ConflictException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { CreateAlunoDto } from './dto/create-aluno.dto';
 import { UpdateAlunoDto } from './dto/update-aluno.dto';
+import paginate from 'src/assets/paginate';
 
 @Injectable()
 export class AlunosService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
   //Dessa forma o service não fica refem do Prisma (desaclopa)
   async create(data: CreateAlunoDto) {
     //Cria um aluno
@@ -18,55 +24,71 @@ export class AlunosService {
     // console.log(alunoExists);
     if (alunoExists) {
       throw new ConflictException('Esse aluno já existe no sistema');
-
     }
-    console.log(data)
+    console.log(data);
     //Tratar a data_de_nascimento(o tipo)
     //const dataFormatada = data.data_nascimento;
 
     const aluno = await this.prisma.aluno.create({
-      data
+      data,
     });
 
     return aluno;
   }
 
   //Mostra aluno
-  async findAll() {
-    return this.prisma.aluno.findMany({
-      include: {
-        Matricula: true
-      },
-      orderBy: {
-        //para deixar os nomes em ordem crescente (desc) para decrescente
-        nome_aluno: 'asc',
-      },
-    });
-  }
-  
+  // async findAll( pagina: number, itensPorPagina: number, busca?: string) {
+  //   return paginate({
+  //     module: 'alunos',
+  //     busca,
+  //     pagina,
+  //     itensPorPagina,
+  //   });
+  // }
+  // async findAll(pagina: number, itensPorPagina: number, busca?: string) {
+  //   return paginate({
+  //     module: 'alunos',
+  //     busca,
+  //     pagina,
+  //     itensPorPagina,
+  //   });
+  // }
+
+
+  // //Mostra aluno
+  // async findAll() {
+  //   return this.prisma.aluno.findMany({
+  //     include: {
+  //       Matricula: true,
+  //     },
+  //     orderBy: {
+  //       //para deixar os nomes em ordem crescente (desc) para decrescente
+  //       nome_aluno: 'asc',
+  //     },
+  //   });
+  // }
   async findById(id: string) {
     return this.prisma.aluno.findFirst({
       where: {
         //Procura o primeiro id que seja igual ao id que foi passado para findById
-        id: id
+        id: id,
       },
       orderBy: {
         //módulos em ordem alfabética
       },
       include: {
         Matricula: {
-          include:{
-            moduloId: true
+          include: {
+            moduloId: true,
           },
           orderBy: {
             moduloId: {
-              nome_modulo: 'asc'
-            }
-          },     
+              nome_modulo: 'asc',
+            },
+          },
         },
-      }
-
-    })
+      },
+    });
   }
 
   //Atualiza aluno
@@ -79,11 +101,17 @@ export class AlunosService {
         },
       });
     } catch (error) {
-      if(error.code == 'P2002' && error.meta?.target?.includes('cpf')){
-        throw new HttpException('Esse cpf já existe no sistema!', HttpStatus.BAD_REQUEST);
+      if (error.code == 'P2002' && error.meta?.target?.includes('cpf')) {
+        throw new HttpException(
+          'Esse cpf já existe no sistema!',
+          HttpStatus.BAD_REQUEST,
+        );
       }
-      console.log("error");
-      throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+      console.log('error');
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

@@ -21,7 +21,7 @@ export default async function paginate(
   const prisma = new PrismaService();
 
   /* Cálculo do valor da variável skip: calcula o número de itens que devem
-   * ser ignorados ao realizar a paginação com com base na página atual e na
+   * ser ignorados ao realizar a paginação com base na página atual e na
    * quantidade de itens por página
    */
   const skip = Number(itensPorPagina * (pagina - 1));
@@ -29,7 +29,6 @@ export default async function paginate(
   /*Inicialização da variável query como um objeto vazio que será usado para
    * construir as condições de consulta
    */
-
   let query = [];
 
   /* Condição de busca - se a propriedade busca estiver presente, adiciona uma condição à query
