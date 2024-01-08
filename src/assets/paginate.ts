@@ -13,10 +13,14 @@ interface propsType {
 
 /* Função paginate que aceita um objeto com as propriedades especificadas
  * pela interface 'propsType' */
-export default async function paginate(
-  { module, itensPorPagina, pagina, busca, querys, include },
-  propsType,
-) {
+export default async function paginate({
+  module,
+  itensPorPagina,
+  pagina,
+  busca,
+  querys,
+  include,
+}: propsType) {
   //Criação da instância do PrismaService
   const prisma = new PrismaService();
 
@@ -49,13 +53,13 @@ export default async function paginate(
   }
 
   /* Usa o Prisma  para contar o total de itens no banco de dados, considerando as condições especificadas na 'query'
-   * prisma[module] -> prisma.[usuario].count -> prisma.usuario.count
+   * prisma[module] -> prisma[aluno].count -> prisma.aluno.count
    */
-
   const totalItens = await prisma[module].count({
-    where: query,
+    ...(Object.keys(query).length > 0 && { where: query }),
   });
 
+  //await prisma.alunos.count
   //Se não há itens, retorna um objeto indicando que não há dados para mostrar
   if (totalItens === 0) {
     return {
@@ -79,21 +83,23 @@ export default async function paginate(
   try {
     const itens = await prisma[module].findMany({
       //where -> Objeto que contém as condições de consulta
-      where: query,
+      ...(Object.keys(query).length > 0 && { where: query }),
 
       /*skip -> número de itens que a consulta deve ignorar antes de começar a recuperar dados. Isso é calculado com base no
        * número da página e na quantidade de itens por página
        */
-      skip,
+      skip: skip > 0 ? skip: 0,
 
       /* take -> número máximo de itens a serem recuperados pela consulta. Isso é determinado pela quantidade de itens por página
        * definida
        */
-      take: Number(itensPorPagina),
+      //take: Number(itensPorPagina),
+      take: itensPorPagina > 0 ? itensPorPagina : 1,
+
       //Define a ordenação dos resultados. Os resultados são ordenados em ordem crescente com base na propriedade 'createdAt'
 
       orderBy: {
-        createdAt: 'asc',
+        nome_aluno: 'asc',
       },
 
       /*include -> Uma opção para incluir os dados relacionados na consulta. Uma parte dessa função usa um operador lógico '&&'
@@ -101,7 +107,8 @@ export default async function paginate(
        * Se 'include' estiver definido, o objeto incluído na consulta será '{[include] : true'} indicando que os dados relacionados
        * especificados por 'include' devem ser incluídos na resposta da consulta
        */
-      include: include && { [include]: true },
+      //include: include && { [include]: true },
+      ...(include && {include: {[include]: true }}),
     });
 
     /* Calcula o número máximo de páginas ('maxPaginas), arrendondando para cima para garantir que

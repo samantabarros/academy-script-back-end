@@ -6,10 +6,12 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { AlunosService } from './alunos.service';
 import { CreateAlunoDto } from './dto/create-aluno.dto';
 import { UpdateAlunoDto } from './dto/update-aluno.dto';
+import { query } from 'express';
 
 @Controller('alunos')
 export class AlunosController {
@@ -23,8 +25,11 @@ export class AlunosController {
 
   //Lista os alunos
   @Get()
-  async findAll() {
-    return this.alunosService.findAll();
+  async findAll(
+    @Query('pagina') pagina: number,
+    @Query('itensPorpagina') itensPorPagina:number,
+    @Query("busca") busca?: string) {
+    return this.alunosService.findAll(pagina, itensPorPagina, busca);
   }
 
   @Get(':id')

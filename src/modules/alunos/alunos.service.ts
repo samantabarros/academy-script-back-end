@@ -37,14 +37,14 @@ export class AlunosService {
   }
 
   //Mostra aluno
-  // async findAll( pagina: number, itensPorPagina: number, busca?: string) {
-  //   return paginate({
-  //     module: 'alunos',
-  //     busca,
-  //     pagina,
-  //     itensPorPagina,
-  //   });
-  // }
+  async findAll( pagina: number, itensPorPagina: number, busca?: string) {
+    return paginate({
+      module: 'aluno',
+      busca,
+      pagina,
+      itensPorPagina,
+    });
+  }
   // async findAll(pagina: number, itensPorPagina: number, busca?: string) {
   //   return paginate({
   //     module: 'alunos',
