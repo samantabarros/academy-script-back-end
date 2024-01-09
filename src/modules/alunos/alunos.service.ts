@@ -41,8 +41,8 @@ export class AlunosService {
     return paginate({
       module: 'aluno',
       busca,
-      pagina,
-      itensPorPagina,
+      pagina,  //tirar esse valor
+      itensPorPagina, //tirar esse valor
     });
   }
   // async findAll(pagina: number, itensPorPagina: number, busca?: string) {

@@ -29,19 +29,21 @@ export default async function paginate({
    * quantidade de itens por página
    */
   const skip = Number(itensPorPagina * (pagina - 1));
+  console.log("O valor de skip é "+ skip);
+
 
   /*Inicialização da variável query como um objeto vazio que será usado para
    * construir as condições de consulta
    */
-  let query = [];
+  let query = {};
 
   /* Condição de busca - se a propriedade busca estiver presente, adiciona uma condição à query
    * para buscar registros onde o nome contém a string especificada, sendo case-insensitive
    */
   if (busca) {
     query = Object.assign(query, {
-      nome: {
-        contains: 'busca',
+      nome_aluno: {
+        contains: busca,
         mode: 'insensitive',
       },
     });
@@ -51,12 +53,15 @@ export default async function paginate({
   if (querys) {
     query = Object.assign(query, querys);
   }
+  console.log("query:" + query);
+  console.log("querys:" + querys);
 
   /* Usa o Prisma  para contar o total de itens no banco de dados, considerando as condições especificadas na 'query'
    * prisma[module] -> prisma[aluno].count -> prisma.aluno.count
    */
   const totalItens = await prisma[module].count({
-    ...(Object.keys(query).length > 0 && { where: query }),
+    // ...(Object.keys(query).length > 0 && { where: query }),
+    where: query,
   });
 
   //await prisma.alunos.count
@@ -83,12 +88,13 @@ export default async function paginate({
   try {
     const itens = await prisma[module].findMany({
       //where -> Objeto que contém as condições de consulta
-      ...(Object.keys(query).length > 0 && { where: query }),
+      // ...(Object.keys(query).length > 0 && { where: query }),
+      where: query,
 
       /*skip -> número de itens que a consulta deve ignorar antes de começar a recuperar dados. Isso é calculado com base no
        * número da página e na quantidade de itens por página
        */
-      skip: skip > 0 ? skip: 0,
+      skip: skip > 0 ? skip : 0,
 
       /* take -> número máximo de itens a serem recuperados pela consulta. Isso é determinado pela quantidade de itens por página
        * definida
@@ -108,7 +114,7 @@ export default async function paginate({
        * especificados por 'include' devem ser incluídos na resposta da consulta
        */
       //include: include && { [include]: true },
-      ...(include && {include: {[include]: true }}),
+      ...(include && { include: { [include]: true } }),
     });
 
     /* Calcula o número máximo de páginas ('maxPaginas), arrendondando para cima para garantir que
@@ -116,6 +122,11 @@ export default async function paginate({
      */
     const maxPagRaw = Number(totalItens / itensPorPagina);
     const maxPaginas = Math.ceil(maxPagRaw);
+  
+    console.log("O valor de itensPorPagina é " + itensPorPagina);
+    console.log("O valor de totalItens é " + totalItens);
+    console.log("O valor de maxPagRaw é " + maxPagRaw);
+    console.log("O valor de maxPaginas é " + maxPaginas);
 
     //Retorno dos dados paginados
     /* Retorna um objeto contendo os itens paginados ('data') e o número máximo de páginas. Se ocorrer um erro durante a execução,
