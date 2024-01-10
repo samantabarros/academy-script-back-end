@@ -7,8 +7,9 @@ interface propsType {
   itensPorPagina: number;
   pagina: number;
   busca: string;
-  querys?: string;
+  queries?: string;
   include?: string;
+  buscaPor?:string;
 }
 
 /* Função paginate que aceita um objeto com as propriedades especificadas
@@ -18,8 +19,9 @@ export default async function paginate({
   itensPorPagina,
   pagina,
   busca,
-  querys,
+  queries,
   include,
+  buscaPor,
 }: propsType) {
   //Criação da instância do PrismaService
   const prisma = new PrismaService();
@@ -31,7 +33,6 @@ export default async function paginate({
   const skip = Number(itensPorPagina * (pagina - 1));
   console.log("O valor de skip é "+ skip);
 
-
   /*Inicialização da variável query como um objeto vazio que será usado para
    * construir as condições de consulta
    */
@@ -41,20 +42,29 @@ export default async function paginate({
    * para buscar registros onde o nome contém a string especificada, sendo case-insensitive
    */
   if (busca) {
-    query = Object.assign(query, {
-      nome_aluno: {
-        contains: busca,
-        mode: 'insensitive',
-      },
-    });
-  }
+    if(buscaPor){
+      query = Object.assign(query, {
+        [buscaPor]: {
+          contains: busca,
+          mode: 'insensitive',
+        },
+      });
+    }else {
+      query = Object.assign(query, {
+        nome: {
+          contains: busca,
+          mode: 'insensitive',
+        },
+      });
+    }
+  }//fim do if busca
 
   //Condições adicionais - adiciona condições adicionais a query com base em um array de queries
-  if (querys) {
-    query = Object.assign(query, querys);
+  if (queries) {
+    query = Object.assign(query, queries);
   }
-  console.log("query:" + query);
-  console.log("querys:" + querys);
+  console.log("query:" + queries);
+  console.log("queries:" + queries);
 
   /* Usa o Prisma  para contar o total de itens no banco de dados, considerando as condições especificadas na 'query'
    * prisma[module] -> prisma[aluno].count -> prisma.aluno.count
@@ -72,13 +82,12 @@ export default async function paginate({
       maxPage: 0,
     };
   }
-
   /* Recuperação dos itens paginados
    * Recupera os itens paginados do banco de dados usando o Prisma, considerando as condições e a ordenação especificadas.
    */
 
   /* [module] ->  A propriedade 'module' é uma string passada como argumento para a função paginate. Ela representa a entidade
-   *  ou tabela do banco de dados da qual se deseja recuperar os dados. Se 'module' for 'User', a consulta será feita na tabela
+   *  ou tabela do banco de dados da qual se desejaquerys recuperar os dados. Se 'module' for 'User', a consulta será feita na tabela
    * de usuários
    */
 
@@ -91,7 +100,7 @@ export default async function paginate({
       // ...(Object.keys(query).length > 0 && { where: query }),
       where: query,
 
-      /*skip -> número de itens que a consulta deve ignorar antes de começar a recuperar dados. Isso é calculado com base no
+      /*skip -> querysquerysquerysquerysquerysquerysquerysquerysquerysquerysquerysquerysquerysquerysquerysquerysquerysquerysquerysquerysquerys de itens que a consulta deve ignorar antes de começar a recuperar dados. Isso é calculado com base no
        * número da página e na quantidade de itens por página
        */
       skip: skip > 0 ? skip : 0,
