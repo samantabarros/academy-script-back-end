@@ -37,24 +37,16 @@ export class AlunosService {
   }
 
   //Mostra aluno
-  async findAll( pagina: number, itensPorPagina: number, busca?: string, buscaPor?: string) {
+  async findAll( pagina: number, itensPorPagina: number, busca?: string) {
     return paginate({
       module: 'aluno',
       busca,
       pagina,  //tirar esse valor
       itensPorPagina, //tirar esse valor
       buscaPor: 'nome_aluno',
+      
     });
   }
-  // async findAll(pagina: number, itensPorPagina: number, busca?: string) {
-  //   return paginate({
-  //     module: 'alunos',
-  //     busca,
-  //     pagina,
-  //     itensPorPagina,
-  //   });
-  // }
-
 
   // //Mostra aluno
   // async findAll() {

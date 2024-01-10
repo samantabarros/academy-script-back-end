@@ -28,10 +28,9 @@ export class AlunosController {
   async findAll(
     @Query('pagina') pagina: number,
     @Query('itensPorPagina') itensPorPagina:number,
-    @Query("busca") busca?: string,
-    @Query("buscaPor") buscaPor?: string,) 
+    @Query("busca") busca?: string,) 
   {
-    return this.alunosService.findAll(pagina, itensPorPagina, busca, buscaPor);
+    return this.alunosService.findAll(pagina, itensPorPagina, busca);
   }
 
   @Get(':id')
