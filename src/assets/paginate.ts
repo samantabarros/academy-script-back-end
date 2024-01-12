@@ -66,15 +66,13 @@ export default async function paginate({
       maxPage: 0,
     };
   }
- 
+
   try {
     const itens = await prisma[module].findMany({
-      //where -> Objeto que contém as condições de consulta
-      // ...(Object.keys(query).length > 0 && { where: query }),
       where: {
         ...query,
       },
-      skip,
+      skip: busca ? 0: skip,
       take: Number(itensPorPagina),
       orderBy: {
         [buscaPor]: 'asc',
@@ -85,16 +83,20 @@ export default async function paginate({
 
     const maxPagRaw = Number(totalItens / itensPorPagina);
     const maxPaginas = Math.ceil(maxPagRaw);
-  
+    
     console.log("O valor de itensPorPagina é " + itensPorPagina);
     console.log("O valor de totalItens é " + totalItens);
     console.log("O valor de maxPagRaw é " + maxPagRaw);
     console.log("O valor de maxPaginas é " + maxPaginas);
+    console.log("O valor de maxPaginas é " + maxPaginas);
+    console.log("O valor de skip é: " + skip);
 
     return {
       data: itens,
       maxPage: maxPaginas,
-    };
+      
+    };     
+
   } catch (error) {
     console.log(error.message);
     throw new Error(error);
