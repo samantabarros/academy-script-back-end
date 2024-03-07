@@ -2,6 +2,7 @@ import { ConflictException, HttpCode, HttpException, HttpStatus, Injectable } fr
 import { PrismaService } from 'src/database/PrismaService';
 import { UpdateMatriculaDto } from './dto/update-matricula.dto';
 import { CreateMatriculaDto } from './dto/create-matricula.dto';
+import paginate from 'src/assets/paginate';
 
 
 @Injectable()
@@ -31,9 +32,14 @@ export class MatriculaService {
 
 
   //Ler (read) - para listar todos os módulos
-  async findAll() {
-    return this.prisma.matricula.findMany();
-    
+  async findAll(pagina: number, itensPorPagina: number, busca?: string) {
+    return paginate({
+      module: 'matricula',
+      busca,
+      pagina,
+      itensPorPagina,
+      buscaPor: 'nome_modulo',
+    })
   }
 
   //Para buscar por id

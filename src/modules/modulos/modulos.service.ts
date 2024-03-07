@@ -2,6 +2,8 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { CreateModuloDto } from './dto/create-modulo.dto';
 import { UpdateModuloDto } from './dto/update-modulo.dto';
+import paginate from 'src/assets/paginate';
+import { Matricula } from '../matricula/entities/matricula.entity';
 
 @Injectable()
 export class ModulosService {
@@ -31,54 +33,52 @@ export class ModulosService {
     });
   }
 
-  async findById(id: string) {
-    return this.prisma.modulo.findFirst({
-      where: {
-        id: id,
-      },
-      include: {
-        Matricula: {
-          include: {
-            alunoId: true,
-          },
-          orderBy: {
-            alunoId: {
-              nome_aluno: 'asc'
-            }
+  async findById(
+    id: string,
+    pagina: number,
+    itensPorPagina: number,
+    busca?: string,
+  ) {
+
+    return (
+      this.prisma.modulo.findFirst({
+        where: {
+          id: id,
+        },
+        include: {
+          Matricula: {
+            include: {
+              alunoId: true,
+            },
+            orderBy: {
+              alunoId: {
+                nome_aluno: 'asc',
+              },
+            },
           },
         },
-      },
-    });
+      }) 
+      // return paginate({
+      //   module: 'modulo',
+      //   busca,
+      //   pagina,
+      //   itensPorPagina,
+      //   buscaPor:'id',
+      //   include: {
+      //     Matricula: {
+      //       include: {
+      //         alunoId: true,
+      //       },
+      //       orderBy: {
+      //         alunoId: {
+      //           nome_aluno: 'asc',
+      //         },
+      //       },
+      //     },
+      //   },
+      // });
+    );
   }
-
-  // async findById(id: string) {
-  //   const matricula = await this.prisma.modulo.findFirst({
-  //     where: {
-  //       id:id,
-  //     },
-  //     include: {
-  //       Matricula: true,
-  //     },
-  //   });
-
-  //   if(!matricula) {
-  //     return null;
-  //   }
-
-  //   const matriculaComAluno = await this.prisma.matricula.findUnique({
-  //     where: {
-  //       id: matricula.Matricula.id,
-  //     },
-  //     include: {
-  //       alunoId: {
-  //         orderBy: {
-  //           nome_aluno: 'asc',
-  //         },
-  //       },
-  //     }
-
-  //   })
-  // }
 
   async update(id: string, data: UpdateModuloDto) {
     const moduloExists = await this.prisma.modulo.findFirst({

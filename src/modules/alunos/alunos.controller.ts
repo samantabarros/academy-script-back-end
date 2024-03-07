@@ -11,7 +11,6 @@ import {
 import { AlunosService } from './alunos.service';
 import { CreateAlunoDto } from './dto/create-aluno.dto';
 import { UpdateAlunoDto } from './dto/update-aluno.dto';
-import { query } from 'express';
 
 @Controller('alunos')
 export class AlunosController {

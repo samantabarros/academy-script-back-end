@@ -6,7 +6,7 @@ interface propsType {
   pagina: number;
   itensPorPagina: number;
   queries?: string;
-  include?: string;
+  include?: Object;
   buscaPor?:string;
 }
 
@@ -22,12 +22,9 @@ export default async function paginate({
 
   const prisma = new PrismaService();
   const skip = Number(itensPorPagina * (pagina - 1));
-  console.log("O valor de skip é " + skip + "\n");
 
   let query = {};
  
-  console.log(busca);
-
   if (busca) {
     if(buscaPor){
       query = Object.assign(query, {
@@ -50,11 +47,9 @@ export default async function paginate({
   if (queries) {
     query = Object.assign(query, queries);
   }
-  console.log(query);
 
-  
   const totalItens = await prisma[module].count({
-    // ...(Object.keys(query).length > 0 && { where: query }),
+    ...(Object.keys(query).length > 0 && { where: query }),
     where: {
       ...query,
     }
@@ -77,7 +72,6 @@ export default async function paginate({
       orderBy: {
         [buscaPor]: 'asc',
       },
-      // ...(include && { include: { [include]: true } }),
       include,
     });
 

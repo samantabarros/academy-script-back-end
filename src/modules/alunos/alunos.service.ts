@@ -20,13 +20,11 @@ export class AlunosService {
         cpf: data.cpf,
       },
     });
-    // console.log(data);
-    // console.log(alunoExists);
     if (alunoExists) {
       throw new ConflictException('Esse aluno já existe no sistema');
     }
     console.log(data);
-    //Tratar a data_de_nascimento(o tipo)
+    //Tratar a data_de_nascimento(o tipo) - já foi tratado no front
     //const dataFormatada = data.data_nascimento;
 
     const aluno = await this.prisma.aluno.create({
@@ -37,17 +35,17 @@ export class AlunosService {
   }
 
   //Mostra aluno
-  async findAll( pagina: number, itensPorPagina: number, busca?: string) {
+  async findAll(pagina: number, itensPorPagina: number, busca?: string) {
     return paginate({
       module: 'aluno',
       busca,
-      pagina,  //tirar esse valor
-      itensPorPagina, //tirar esse valor
+      pagina,  
+      itensPorPagina, 
       buscaPor: 'nome_aluno',
       
     });
   }
-
+  
   // //Mostra aluno
   // async findAll() {
   //   return this.prisma.aluno.findMany({
@@ -60,6 +58,7 @@ export class AlunosService {
   //     },
   //   });
   // }
+  
   async findById(id: string) {
     return this.prisma.aluno.findFirst({
       where: {

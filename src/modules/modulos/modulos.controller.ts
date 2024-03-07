@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ModulosService } from './modulos.service';
 import { CreateModuloDto } from './dto/create-modulo.dto';
@@ -25,10 +26,14 @@ export class ModulosController {
     return this.modulosService.findAll();
   }
 
-
   @Get(':id')
-  async findById(@Param('id') id: string) {
-    return this.modulosService.findById(id);
+  async findById(
+    @Param('id') id: string,
+    @Query('pagina') pagina: number,
+    @Query('itensPorPagina') itensPorPagina: number,
+    @Query('busca') busca?: string,
+  ) {
+    return this.modulosService.findById(id, pagina, itensPorPagina, busca);
   }
 
   //Edita um modulo
