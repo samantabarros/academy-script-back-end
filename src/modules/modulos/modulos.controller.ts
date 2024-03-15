@@ -33,6 +33,8 @@ export class ModulosController {
     @Query('itensPorPagina') itensPorPagina: number,
     @Query('busca') busca?: string,
   ) {
+    console.log(id, pagina, itensPorPagina, busca);
+  
     return this.modulosService.findById(id, pagina, itensPorPagina, busca);
   }
 

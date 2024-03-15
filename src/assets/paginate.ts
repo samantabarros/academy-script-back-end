@@ -5,9 +5,10 @@ interface propsType {
   busca: string;
   pagina: number;
   itensPorPagina: number;
-  queries?: string;
+  queries?: Object;
   include?: Object;
-  buscaPor?:string;
+  buscaPor?: Object;
+  ordenacao?: Object;
 }
 
 export default async function paginate({
@@ -18,22 +19,17 @@ export default async function paginate({
   queries,
   include,
   buscaPor,
+  ordenacao,
 }: propsType) {
-
   const prisma = new PrismaService();
   const skip = Number(itensPorPagina * (pagina - 1));
 
   let query = {};
- 
+
   if (busca) {
-    if(buscaPor){
-      query = Object.assign(query, {
-        [buscaPor]: {
-          contains: busca,
-          mode: 'insensitive',
-        },
-      });
-    }else {
+    if (buscaPor) {
+      query = Object.assign(query, buscaPor);
+    } else {
       query = Object.assign(query, {
         nome: {
           contains: busca,
@@ -42,7 +38,7 @@ export default async function paginate({
       });
     }
     console.log(query);
-  }//fim do if busca
+  } //fim do if busca
 
   if (queries) {
     query = Object.assign(query, queries);
@@ -52,7 +48,7 @@ export default async function paginate({
     ...(Object.keys(query).length > 0 && { where: query }),
     where: {
       ...query,
-    }
+    },
   });
 
   if (totalItens === 0) {
@@ -67,33 +63,28 @@ export default async function paginate({
       where: {
         ...query,
       },
-      skip: busca ? 0: skip,
+      skip: busca ? 0 : skip,
       take: Number(itensPorPagina),
-      orderBy: {
-        [buscaPor]: 'asc',
-      },
+      orderBy: ordenacao && ordenacao,
       include,
     });
 
     const maxPagRaw = Number(totalItens / itensPorPagina);
     const maxPaginas = Math.ceil(maxPagRaw);
-    
-    console.log("O valor de itensPorPagina é " + itensPorPagina);
-    console.log("O valor de totalItens é " + totalItens);
-    console.log("O valor de maxPagRaw é " + maxPagRaw);
-    console.log("O valor de maxPaginas é " + maxPaginas);
-    console.log("O valor de maxPaginas é " + maxPaginas);
-    console.log("O valor de skip é: " + skip);
+
+    console.log('O valor de itensPorPagina é ' + itensPorPagina);
+    console.log('O valor de totalItens é ' + totalItens);
+    console.log('O valor de maxPagRaw é ' + maxPagRaw);
+    console.log('O valor de maxPaginas é ' + maxPaginas);
+    console.log('O valor de maxPaginas é ' + maxPaginas);
+    console.log('O valor de skip é: ' + skip);
 
     return {
       data: itens,
       maxPage: maxPaginas,
-      
-    };     
-
+    };
   } catch (error) {
     console.log(error.message);
     throw new Error(error);
   }
-  
 }

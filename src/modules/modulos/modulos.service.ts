@@ -39,45 +39,63 @@ export class ModulosService {
     itensPorPagina: number,
     busca?: string,
   ) {
-
-    return (
-      this.prisma.modulo.findFirst({
-        where: {
-          id: id,
-        },
-        include: {
-          Matricula: {
-            include: {
-              alunoId: true,
-            },
-            orderBy: {
-              alunoId: {
-                nome_aluno: 'asc',
-              },
-            },
+    const queries = {
+      id_modulo: id,
+    };
+    // const include = {
+    //   Matricula: {
+    //     include: {
+    //       alunoId: true,
+    //     },
+    //     orderBy: {
+    //       alunoId: {
+    //         nome_aluno: 'asc',
+    //       },
+    //     },
+    //   },
+    // };
+    // return (
+    //   this.prisma.modulo.findFirst({
+    //     where: {
+    //       id: id,
+    //     },
+    //     include: {
+    //       Matricula: {
+    //         include: {
+    //           alunoId: true,
+    //         },
+    //         orderBy: {
+    //           alunoId: {
+    //             nome_aluno: 'asc',
+    //           },
+    //         },
+    //       },
+    //     },
+    //   })
+    // );
+    return paginate({
+      module: 'matricula',
+      busca,
+      pagina,
+      itensPorPagina,
+      include: {
+        alunoId: true,
+      },
+      queries,
+      buscaPor: {
+        alunoId: {
+          nome_aluno: {
+            contains: busca,
+            mode: 'insensitive',
           },
         },
-      }) 
-      // return paginate({
-      //   module: 'modulo',
-      //   busca,
-      //   pagina,
-      //   itensPorPagina,
-      //   buscaPor:'id',
-      //   include: {
-      //     Matricula: {
-      //       include: {
-      //         alunoId: true,
-      //       },
-      //       orderBy: {
-      //         alunoId: {
-      //           nome_aluno: 'asc',
-      //         },
-      //       },
-      //     },
-      //   },
-      // });
-    );
+      },
+      ordenacao: {
+        alunoId: {
+          nome_aluno: 'asc',
+        },
+      },
+    });
   }
 
   async update(id: string, data: UpdateModuloDto) {

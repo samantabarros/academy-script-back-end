@@ -39,13 +39,20 @@ export class AlunosService {
     return paginate({
       module: 'aluno',
       busca,
-      pagina,  
-      itensPorPagina, 
-      buscaPor: 'nome_aluno',
-      
+      pagina,
+      itensPorPagina,
+      buscaPor: {
+        nome_aluno: {
+          contains: busca,
+          mode: 'insensitive',
+        },
+      },
+      ordenacao: {
+        nome_aluno: 'asc',
+      },
     });
   }
-  
+
   // //Mostra aluno
   // async findAll() {
   //   return this.prisma.aluno.findMany({
@@ -58,7 +65,7 @@ export class AlunosService {
   //     },
   //   });
   // }
-  
+
   async findById(id: string) {
     return this.prisma.aluno.findFirst({
       where: {
