@@ -32,8 +32,13 @@ export class MatriculaController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.matriculaService.findOne(id);
+  async findById(
+    @Param('id') id: string,
+    @Query('pagina') pagina: number,
+    @Query('itensPorPagina') itensPorPagina: number,
+    @Query('busca') busca?: string,
+  ) {
+    return this.matriculaService.findById(id,pagina, itensPorPagina, busca);
   }
 
   @Put(':id')

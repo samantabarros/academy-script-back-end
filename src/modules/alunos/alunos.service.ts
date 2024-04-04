@@ -23,10 +23,7 @@ export class AlunosService {
     if (alunoExists) {
       throw new ConflictException('Esse aluno já existe no sistema');
     }
-    console.log(data);
-    //Tratar a data_de_nascimento(o tipo) - já foi tratado no front
-    //const dataFormatada = data.data_nascimento;
-
+    
     const aluno = await this.prisma.aluno.create({
       data,
     });
@@ -52,19 +49,6 @@ export class AlunosService {
       },
     });
   }
-
-  // //Mostra aluno
-  // async findAll() {
-  //   return this.prisma.aluno.findMany({
-  //     include: {
-  //       Matricula: true,
-  //     },
-  //     orderBy: {
-  //       //para deixar os nomes em ordem crescente (desc) para decrescente
-  //       nome_aluno: 'asc',
-  //     },
-  //   });
-  // }
 
   async findById(id: string) {
     return this.prisma.aluno.findFirst({
@@ -123,7 +107,6 @@ export class AlunosService {
     });
 
     if (!alunoExists) {
-      console.log('aluno não encontrado');
       throw new Error('Esse aluno não está cadastrado!');
     } else {
       const existsMatricula = await this.prisma.matricula.findMany({

@@ -18,7 +18,6 @@ export class AlunosController {
   //Cadastra o aluno
   @Post()
   async create(@Body() data: CreateAlunoDto) {
-    console.log(data);
     return this.alunosService.create(data);
   }
 
@@ -26,14 +25,16 @@ export class AlunosController {
   @Get()
   async findAll(
     @Query('pagina') pagina: number,
-    @Query('itensPorPagina') itensPorPagina:number,
-    @Query("busca") busca?: string,) 
-  {
+    @Query('itensPorPagina') itensPorPagina: number,
+    @Query('busca') busca?: string,
+  ) {
     return this.alunosService.findAll(pagina, itensPorPagina, busca);
   }
 
   @Get(':id')
-  async findById(@Param('id') id: string) {
+  async findById(
+    @Param('id') id: string,
+  ) {
     return this.alunosService.findById(id);
   }
 

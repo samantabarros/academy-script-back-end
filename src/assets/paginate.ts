@@ -37,7 +37,6 @@ export default async function paginate({
         },
       });
     }
-    console.log(query);
   } //fim do if busca
 
   if (queries) {
@@ -71,13 +70,6 @@ export default async function paginate({
 
     const maxPagRaw = Number(totalItens / itensPorPagina);
     const maxPaginas = Math.ceil(maxPagRaw);
-
-    console.log('O valor de itensPorPagina é ' + itensPorPagina);
-    console.log('O valor de totalItens é ' + totalItens);
-    console.log('O valor de maxPagRaw é ' + maxPagRaw);
-    console.log('O valor de maxPaginas é ' + maxPaginas);
-    console.log('O valor de maxPaginas é ' + maxPaginas);
-    console.log('O valor de skip é: ' + skip);
 
     return {
       data: itens,
