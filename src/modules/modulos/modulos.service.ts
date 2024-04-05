@@ -42,37 +42,6 @@ export class ModulosService {
     const queries = {
       id_modulo: id,
     };
-    // const include = {
-    //   Matricula: {
-    //     include: {
-    //       alunoId: true,
-    //     },
-    //     orderBy: {
-    //       alunoId: {
-    //         nome_aluno: 'asc',
-    //       },
-    //     },
-    //   },
-    // };
-    // return (
-    //   this.prisma.modulo.findFirst({
-    //     where: {
-    //       id: id,
-    //     },
-    //     include: {
-    //       Matricula: {
-    //         include: {
-    //           alunoId: true,
-    //         },
-    //         orderBy: {
-    //           alunoId: {
-    //             nome_aluno: 'asc',
-    //           },
-    //         },
-    //       },
-    //     },
-    //   })
-    // );
     return paginate({
       module: 'matricula',
       busca,

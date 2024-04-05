@@ -13,8 +13,7 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     async login(@Request() req: AuthRequest){
         //o nome da variável tem que ser user
-        console.log(req.user);
-        //console.log("Chegou aqui controller login")
+       console.log (req.user);
         return this.authService.login(req.user);
     }
 }

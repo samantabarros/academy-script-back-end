@@ -15,13 +15,11 @@ export class AuthService {
     
     async login(usuario: Usuario): Promise <UsuarioToken> {
       //Transforma o usuario em JWT
-      //console.log("Usuário:" + usuario);
       const payload: UsuarioPayload = {
         sub: usuario.id,
         senha: usuario.password,
         email: usuario.email
       };
-      //console.log(payload);
       
       const jwtToken = this.jwtService.sign(payload);
       return {
@@ -33,9 +31,7 @@ export class AuthService {
     }
     
     async validarUsuario(email: string, password: string): Promise<Usuario>{
-      //console.log('Entrou em validar usuário');
       const usuario = await this.usuariosService.findByEmail(email);
-      //console.log(usuario);
       
       if (usuario) {
         //Checa se a senha informada é igual a hash que está no banco
