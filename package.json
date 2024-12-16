@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "nest build",
+    "vercel-build": "npx prisma migrate deploy",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "src/main.ts",
     "start:dev": "nest start --watch",
