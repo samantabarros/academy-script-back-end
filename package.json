@@ -9,7 +9,7 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "engines": {
-    "node": "14.x"
+    "node": "22.x"
   },
   "scripts": {
     "build": "nest build",
